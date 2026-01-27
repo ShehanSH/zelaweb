@@ -28,31 +28,7 @@ function orderProduct(productName) {
     window.open(whatsappUrl, '_blank');
 }
 
-// Add scroll animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Observe product cards and upcoming cards
-document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.product-card, .upcoming-card');
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
-});
+// Simple scroll behavior - no complex animations
 
 // Navbar background on scroll
 let lastScroll = 0;
@@ -61,21 +37,74 @@ window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
 
     if (currentScroll > 100) {
-        navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.15)';
+        navbar.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.12)';
     } else {
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.08)';
     }
 
     lastScroll = currentScroll;
 });
 
-// Add animation to social links
-document.querySelectorAll('.social-link').forEach(link => {
-    link.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px) scale(1.05)';
+// Simple hover effects for social links (handled by CSS)
+
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+const mobileMenuClose = document.getElementById('mobileMenuClose');
+const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+function openMobileMenu() {
+    mobileMenuBtn.classList.add('active');
+    mobileMenuOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+    mobileMenuBtn.classList.remove('active');
+    mobileMenuOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', openMobileMenu);
+}
+
+if (mobileMenuClose) {
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+}
+
+// Close menu when clicking on overlay (outside menu content)
+if (mobileMenuOverlay) {
+    mobileMenuOverlay.addEventListener('click', function(e) {
+        if (e.target === mobileMenuOverlay) {
+            closeMobileMenu();
+        }
     });
-    
-    link.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
+}
+
+// Close menu when clicking on a link
+mobileMenuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        closeMobileMenu();
+    });
+});
+
+// Close menu on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && mobileMenuOverlay.classList.contains('active')) {
+        closeMobileMenu();
+    }
+});
+
+// Simple product card interactions
+document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+        // Don't trigger if clicking on buttons
+        if (!e.target.closest('.btn-order') && !e.target.closest('.btn-view')) {
+            const orderBtn = this.querySelector('.btn-order');
+            if (orderBtn) {
+                orderBtn.click();
+            }
+        }
     });
 });
