@@ -86,15 +86,31 @@
                         <h3 class="product-name">Elegant Evening Dress</h3>
                         <p class="product-description">Sophisticated black evening gown with elegant draping</p>
                         <div class="product-footer">
-                            <span class="product-price">$129.99</span>
+                            <span class="product-price">LKR 2000</span>
                             <button class="btn-order" onclick="orderProduct('Elegant Evening Dress')">Order</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="product-card">
-                    <div class="product-image">
+                    <div class="product-image-gallery">
                         <span class="product-badge">New</span>
+                        <div class="gallery-container" id="blouseGallery">
+                            <div class="gallery-wrapper">
+                                <img src="images/image1.png" alt="Casual Summer Blouse - View 1" class="gallery-image active">
+                                <img src="images/image2.png" alt="Casual Summer Blouse - View 2" class="gallery-image">
+                                <img src="images/image3.png" alt="Casual Summer Blouse - View 3" class="gallery-image">
+                                <img src="images/image4.png" alt="Casual Summer Blouse - View 4" class="gallery-image">
+                            </div>
+                            <button class="gallery-nav gallery-prev" aria-label="Previous image" onclick="changeBlouseImage(-1, event)">&#8249;</button>
+                            <button class="gallery-nav gallery-next" aria-label="Next image" onclick="changeBlouseImage(1, event)">&#8250;</button>
+                            <div class="gallery-dots">
+                                <span class="dot active" onclick="goToBlouseImage(0, event)"></span>
+                                <span class="dot" onclick="goToBlouseImage(1, event)"></span>
+                                <span class="dot" onclick="goToBlouseImage(2, event)"></span>
+                                <span class="dot" onclick="goToBlouseImage(3, event)"></span>
+                            </div>
+                        </div>
                         <div class="product-overlay">
                             <button class="btn-view" onclick="orderProduct('Casual Summer Blouse')">Order Now</button>
                         </div>
@@ -103,7 +119,7 @@
                         <h3 class="product-name">Casual Summer Blouse</h3>
                         <p class="product-description">Lightweight and comfortable for everyday elegance</p>
                         <div class="product-footer">
-                            <span class="product-price">$59.99</span>
+                            <span class="product-price">LKR 1500</span>
                             <button class="btn-order" onclick="orderProduct('Casual Summer Blouse')">Order</button>
                         </div>
                     </div>
@@ -120,7 +136,7 @@
                         <h3 class="product-name">Designer Jacket</h3>
                         <p class="product-description">Stylish outerwear perfect for any occasion</p>
                         <div class="product-footer">
-                            <span class="product-price">$149.99</span>
+                            <span class="product-price">LKR 2500</span>
                             <button class="btn-order" onclick="orderProduct('Designer Jacket')">Order</button>
                         </div>
                     </div>
@@ -137,7 +153,7 @@
                         <h3 class="product-name">Classic Trousers</h3>
                         <p class="product-description">Timeless tailored fit for professional elegance</p>
                         <div class="product-footer">
-                            <span class="product-price">$79.99</span>
+                            <span class="product-price">LKR 1500</span>
                             <button class="btn-order" onclick="orderProduct('Classic Trousers')">Order</button>
                         </div>
                     </div>
@@ -154,7 +170,7 @@
                         <h3 class="product-name">Elegant Skirt Set</h3>
                         <p class="product-description">Two-piece ensemble for modern sophistication</p>
                         <div class="product-footer">
-                            <span class="product-price">$89.99</span>
+                            <span class="product-price">LKR 1800</span>
                             <button class="btn-order" onclick="orderProduct('Elegant Skirt Set')">Order</button>
                         </div>
                     </div>
@@ -171,7 +187,7 @@
                         <h3 class="product-name">Luxury Scarf</h3>
                         <p class="product-description">Premium silk scarf with elegant patterns</p>
                         <div class="product-footer">
-                            <span class="product-price">$45.99</span>
+                            <span class="product-price">LKR 1000</span>
                             <button class="btn-order" onclick="orderProduct('Luxury Scarf')">Order</button>
                         </div>
                     </div>
@@ -193,9 +209,9 @@
                         <div class="coming-soon-badge">Coming Soon</div>
                     </div>
                     <div class="upcoming-info">
-                        <h3 class="upcoming-name">Spring Collection 2024</h3>
+                        <h3 class="upcoming-name">Spring Collection 2026</h3>
                         <p class="upcoming-description">Fresh designs inspired by spring elegance</p>
-                        <span class="upcoming-date">Available: March 2024</span>
+                        <span class="upcoming-date">Available: March 2026</span>
                     </div>
                 </div>
 
@@ -206,7 +222,7 @@
                     <div class="upcoming-info">
                         <h3 class="upcoming-name">Luxury Evening Wear</h3>
                         <p class="upcoming-description">Exclusive gowns for special occasions</p>
-                        <span class="upcoming-date">Available: April 2024</span>
+                        <span class="upcoming-date">Available: April 2026</span>
                     </div>
                 </div>
 
@@ -217,7 +233,7 @@
                     <div class="upcoming-info">
                         <h3 class="upcoming-name">Casual Elegance Line</h3>
                         <p class="upcoming-description">Comfort meets style in everyday fashion</p>
-                        <span class="upcoming-date">Available: May 2024</span>
+                        <span class="upcoming-date">Available: May 2026</span>
                     </div>
                 </div>
             </div>
