@@ -14,9 +14,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Function to handle product ordering via WhatsApp
 function orderProduct(productName) {
-    // Replace YOUR_PHONE_NUMBER with your actual WhatsApp business number
-    // Format: country code + number (e.g., 1234567890 for US number)
-    const phoneNumber = 'YOUR_PHONE_NUMBER';
+    // WhatsApp business number
+    // Format: country code + number (no + sign or spaces), e.g., 94786628990
+    const phoneNumber = '94786628990';
     
     // Create WhatsApp message
     const message = encodeURIComponent(`Hi! I'm interested in ordering: ${productName}. Please provide more details.`);
