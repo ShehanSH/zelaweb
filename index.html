@@ -27,6 +27,7 @@
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#products">Products</a></li>
+                    <li><a href="#wishlist">Wishlist</a></li>
                     <li><a href="#upcoming">Coming Soon</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -47,6 +48,7 @@
             <ul class="mobile-menu-list">
                 <li><a href="#home" class="mobile-menu-link">Home</a></li>
                 <li><a href="#products" class="mobile-menu-link">Products</a></li>
+                <li><a href="#wishlist" class="mobile-menu-link">Wishlist</a></li>
                 <li><a href="#upcoming" class="mobile-menu-link">Coming Soon</a></li>
                 <li><a href="#contact" class="mobile-menu-link">Contact</a></li>
             </ul>
@@ -72,126 +74,38 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Latest Products</h2>
-                <p class="section-subtitle">Shop our newest arrivals, handpicked for you</p>
+                <p class="section-subtitle">5 dress types available now. Swipe inside each card to view all images.</p>
+                <p class="wishlist-summary">Wishlist items: <span id="wishlistCount">0</span></p>
+                <a href="#wishlist" class="btn-primary wishlist-view-btn">View Wishlist</a>
             </div>
-            <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <span class="product-badge">New</span>
-                        <div class="product-overlay">
-                            <button class="btn-view" onclick="orderProduct('Elegant Evening Dress')">Order Now</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Elegant Evening Dress</h3>
-                        <p class="product-description">Sophisticated black evening gown with elegant draping</p>
-                        <div class="product-footer">
-                            <span class="product-price">LKR 2000</span>
-                            <button class="btn-order" onclick="orderProduct('Elegant Evening Dress')">Order</button>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="product-card">
-                    <div class="product-image-gallery">
-                        <span class="product-badge">New</span>
-                        <div class="gallery-container" id="blouseGallery">
-                            <div class="gallery-wrapper">
-                                <img src="images/image1.png" alt="Casual Summer Blouse - View 1" class="gallery-image active">
-                                <img src="images/image2.png" alt="Casual Summer Blouse - View 2" class="gallery-image">
-                                <img src="images/image3.png" alt="Casual Summer Blouse - View 3" class="gallery-image">
-                                <img src="images/image4.png" alt="Casual Summer Blouse - View 4" class="gallery-image">
-                            </div>
-                            <button class="gallery-nav gallery-prev" aria-label="Previous image" onclick="changeBlouseImage(-1, event)">&#8249;</button>
-                            <button class="gallery-nav gallery-next" aria-label="Next image" onclick="changeBlouseImage(1, event)">&#8250;</button>
-                            <div class="gallery-dots">
-                                <span class="dot active" onclick="goToBlouseImage(0, event)"></span>
-                                <span class="dot" onclick="goToBlouseImage(1, event)"></span>
-                                <span class="dot" onclick="goToBlouseImage(2, event)"></span>
-                                <span class="dot" onclick="goToBlouseImage(3, event)"></span>
-                            </div>
-                        </div>
-                        <div class="product-overlay">
-                            <button class="btn-view" onclick="orderProduct('Casual Summer Blouse')">Order Now</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Casual Summer Blouse</h3>
-                        <p class="product-description">Lightweight and comfortable for everyday elegance</p>
-                        <div class="product-footer">
-                            <span class="product-price">LKR 1450</span>
-                            <button class="btn-order" onclick="orderProduct('Casual Summer Blouse')">Order</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="products-grid" id="productGrid">
+                <!-- Product cards are rendered by script.js -->
+            </div>
+        </div>
+    </section>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <span class="product-badge">New</span>
-                        <div class="product-overlay">
-                            <button class="btn-view" onclick="orderProduct('Designer Jacket')">Order Now</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Designer Jacket</h3>
-                        <p class="product-description">Stylish outerwear perfect for any occasion</p>
-                        <div class="product-footer">
-                            <span class="product-price">LKR 2500</span>
-                            <button class="btn-order" onclick="orderProduct('Designer Jacket')">Order</button>
-                        </div>
-                    </div>
-                </div>
+    <!-- Wishlist Section -->
+    <section id="wishlist" class="wishlist-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">My Wishlist</h2>
+                <p class="section-subtitle">Your saved favorite dresses</p>
+            </div>
+            <div id="wishlistGrid" class="wishlist-grid"></div>
+            <p id="wishlistEmpty" class="wishlist-empty">No items in wishlist yet. Tap the heart icon on any dress.</p>
+        </div>
+    </section>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <span class="product-badge">New</span>
-                        <div class="product-overlay">
-                            <button class="btn-view" onclick="orderProduct('Classic Trousers')">Order Now</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Classic Trousers</h3>
-                        <p class="product-description">Timeless tailored fit for professional elegance</p>
-                        <div class="product-footer">
-                            <span class="product-price">LKR 1500</span>
-                            <button class="btn-order" onclick="orderProduct('Classic Trousers')">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <span class="product-badge">New</span>
-                        <div class="product-overlay">
-                            <button class="btn-view" onclick="orderProduct('Elegant Skirt Set')">Order Now</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Elegant Skirt Set</h3>
-                        <p class="product-description">Two-piece ensemble for modern sophistication</p>
-                        <div class="product-footer">
-                            <span class="product-price">LKR 1800</span>
-                            <button class="btn-order" onclick="orderProduct('Elegant Skirt Set')">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <span class="product-badge">New</span>
-                        <div class="product-overlay">
-                            <button class="btn-view" onclick="orderProduct('Luxury Scarf')">Order Now</button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Luxury Scarf</h3>
-                        <p class="product-description">Premium silk scarf with elegant patterns</p>
-                        <div class="product-footer">
-                            <span class="product-price">LKR 1000</span>
-                            <button class="btn-order" onclick="orderProduct('Luxury Scarf')">Order</button>
-                        </div>
-                    </div>
-                </div>
+    <!-- Size Chart -->
+    <section id="size-chart" class="size-chart-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Size Chart</h2>
+                <p class="section-subtitle">Please check the size chart before placing your order.</p>
+            </div>
+            <div class="size-chart-card">
+                <img src="images/sizechart.png" alt="Dress size chart" class="size-chart-image">
             </div>
         </div>
     </section>
@@ -306,6 +220,21 @@
         </div>
     </section>
 
+    <!-- Customer Info -->
+    <section class="customer-info-section">
+        <div class="container">
+            <div class="customer-info-card">
+                <p><strong>All clothes are made in Sri Lanka.</strong></p>
+                <p><strong>All Island Delivery Available</strong> (Delivery charges will be added).</p>
+                <p>Check our social media platforms for customer feedback and customer reviews.</p>
+                <div class="feedback-social">
+                    <a href="https://www.facebook.com/share/1AoemmbRtA/?mibextid=wwXIfr" target="_blank" aria-label="Facebook">FB</a>
+                    <a href="https://www.tiktok.com/@zelaonlinestore?_r=1&_t=ZS-93h47DyirB3" target="_blank" aria-label="TikTok">TT</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -356,6 +285,12 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
         </svg>
+    </a>
+
+    <!-- Floating Wishlist Button -->
+    <a href="#wishlist" class="floating-wishlist" aria-label="Go to wishlist">
+        <span>❤</span>
+        <small id="wishlistCountFab">0</small>
     </a>
 
     <script src="script.js"></script>
