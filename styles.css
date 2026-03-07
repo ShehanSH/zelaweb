@@ -774,6 +774,18 @@ section {
 
 .customer-info-card p {
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 1.05rem;
 }
 
 .feedback-social {
@@ -794,11 +806,15 @@ section {
     font-weight: 700;
 }
 
-.feedback-social a:first-child {
+.feedback-social a.fb {
     background: #1877f2;
 }
 
-.feedback-social a:last-child {
+.feedback-social a.ig {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.feedback-social a.tt {
     background: #000;
 }
 
