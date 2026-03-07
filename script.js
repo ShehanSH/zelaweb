@@ -68,7 +68,7 @@ const products = [
     {
         id: 'item5',
         name: 'Rose Print Kaftan Frock',
-        price: 'Rs.1950/=',
+        price: 'Rs.1600/=',
         material: 'Glass Printed Material',
         images: [
             'images/item5/1.png',
