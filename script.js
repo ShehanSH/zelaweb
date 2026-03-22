@@ -12,30 +12,62 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Product and gallery data
+// Product and gallery data (display order: newest first — item7 → item1)
 const products = [
     {
-        id: 'item1',
-        name: 'Navy Geometric Wrap Top',
-        price: 'Rs.1490/=',
-        material: 'Italian Crush',
+        id: 'item7',
+        name: 'Latest Arrival — Style 7',
+        price: 'Rs.1690/=',
+        material: 'Premium fabric (details on WhatsApp)',
+        outOfStock: false,
         images: [
-            'images/item1/1.png',
-            'images/item1/2.png',
-            'images/item1/3.png',
-            'images/item1/4.png'
+            'images/item7/1.png',
+            'images/item7/2.png',
+            'images/item7/3.png',
+            'images/item7/4.png',
+            'images/item7/5.png'
         ]
     },
     {
-        id: 'item2',
-        name: 'Black Mustard Mandala Top',
-        price: 'Rs.1450/=',
-        material: 'Italian Crush',
+        id: 'item6',
+        name: 'Latest Arrival — Style 6',
+        price: 'Rs.1590/=',
+        material: 'Premium fabric (details on WhatsApp)',
+        outOfStock: false,
         images: [
-            'images/item2/1.png',
-            'images/item2/2.png',
-            'images/item2/3.png',
-            'images/item2/4.png'
+            'images/item6/1.png',
+            'images/item6/2.png',
+            'images/item6/3.png',
+            'images/item6/4.png',
+            'images/item6/5.png'
+        ]
+    },
+    {
+        id: 'item5',
+        name: 'Rose Print Kaftan Frock',
+        price: 'Rs.1600/=',
+        material: 'Glass Printed Material',
+        outOfStock: false,
+        images: [
+            'images/item5/1.png',
+            'images/item5/2.png',
+            'images/item5/3.png',
+            'images/item5/4.png',
+            'images/item5/5.png'
+        ]
+    },
+    {
+        id: 'item4',
+        name: 'Pink Puff Sleeve Fitted Top',
+        price: 'Rs.1500/=',
+        material: 'Polly Cotton (Soft & Comfortable)',
+        outOfStock: false,
+        images: [
+            'images/item4/1.png',
+            'images/item4/2.png',
+            'images/item4/3.png',
+            'images/item4/4.png',
+            'images/item4/5.png'
         ]
     },
     {
@@ -43,6 +75,7 @@ const products = [
         name: 'Ivory Floral Relaxed Top',
         price: 'Rs.1500/=',
         material: 'Glass Printed Material',
+        outOfStock: false,
         images: [
             'images/item3/1.png',
             'images/item3/2.png',
@@ -53,29 +86,29 @@ const products = [
         ]
     },
     {
-        id: 'item4',
-        name: 'Pink Puff Sleeve Fitted Top',
-        price: 'Rs.1500/=',
-        material: 'Polly Cotton (Soft & Comfortable)',
+        id: 'item2',
+        name: 'Black Mustard Mandala Top',
+        price: 'Rs.1450/=',
+        material: 'Italian Crush',
+        outOfStock: true,
         images: [
-            'images/item4/1.png',
-            'images/item4/2.png',
-            'images/item4/3.png',
-            'images/item4/4.png',
-            'images/item4/5.png'
+            'images/item2/1.png',
+            'images/item2/2.png',
+            'images/item2/3.png',
+            'images/item2/4.png'
         ]
     },
     {
-        id: 'item5',
-        name: 'Rose Print Kaftan Frock',
-        price: 'Rs.1600/=',
-        material: 'Glass Printed Material',
+        id: 'item1',
+        name: 'Navy Geometric Wrap Top',
+        price: 'Rs.1490/=',
+        material: 'Italian Crush',
+        outOfStock: true,
         images: [
-            'images/item5/1.png',
-            'images/item5/2.png',
-            'images/item5/3.png',
-            'images/item5/4.png',
-            'images/item5/5.png'
+            'images/item1/1.png',
+            'images/item1/2.png',
+            'images/item1/3.png',
+            'images/item1/4.png'
         ]
     }
 ];
@@ -124,6 +157,19 @@ function toggleWishlist(productId) {
     renderWishlistSection();
 }
 
+/** Tiny transparent GIF — real product URLs are set from data-src when user opens that slide */
+const PLACEHOLDER_IMG =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+function ensureGalleryImageSrc(gallery, slideIndex) {
+    const imgs = gallery.querySelectorAll('.gallery-image');
+    const img = imgs[slideIndex];
+    if (!img || !img.dataset.src) return;
+    img.src = img.dataset.src;
+    img.removeAttribute('data-src');
+    img.classList.remove('gallery-image--pending');
+}
+
 function showImage(productId, index) {
     const product = products.find(item => item.id === productId);
     if (!product) return;
@@ -135,6 +181,8 @@ function showImage(productId, index) {
 
     const gallery = document.querySelector(`.gallery-container[data-product-id="${productId}"]`);
     if (!gallery) return;
+
+    ensureGalleryImageSrc(gallery, index);
 
     gallery.querySelectorAll('.gallery-image').forEach((imageEl, imageIndex) => {
         imageEl.classList.toggle('active', imageIndex === index);
@@ -162,47 +210,86 @@ function goToImage(productId, index, event) {
     showImage(productId, index);
 }
 
+function bindGallerySkeletons() {
+    document.querySelectorAll('.gallery-container').forEach(container => {
+        const activeImg = container.querySelector('.gallery-image.active');
+        if (!activeImg) {
+            container.classList.add('gallery-loaded');
+            return;
+        }
+        const done = () => container.classList.add('gallery-loaded');
+        if (activeImg.complete && activeImg.naturalWidth > 0) {
+            done();
+        } else {
+            activeImg.addEventListener('load', done, { once: true });
+            activeImg.addEventListener('error', done, { once: true });
+        }
+    });
+}
+
 function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
 
-    const markup = products.map(product => {
-        const imageMarkup = product.images.map((imagePath, index) => `
-            <img src="${imagePath}" alt="${product.name} - view ${index + 1}" class="gallery-image ${index === 0 ? 'active' : ''}">
-        `).join('');
+    const markup = products.map((product, productIndex) => {
+        const out = Boolean(product.outOfStock);
+        const imageMarkup = product.images
+            .map((imagePath, index) => {
+                const isFirstSlide = index === 0;
+                const priorityAttr =
+                    productIndex === 0 && isFirstSlide ? ' fetchpriority="high"' : '';
+                if (isFirstSlide) {
+                    return `
+            <img src="${imagePath}" alt="${product.name} - view ${index + 1}" class="gallery-image active" decoding="async" loading="eager"${priorityAttr}>`;
+                }
+                return `
+            <img src="${PLACEHOLDER_IMG}" data-src="${imagePath}" alt="${product.name} - view ${index + 1}" class="gallery-image gallery-image--pending" decoding="async" loading="lazy">`;
+            })
+            .join('');
 
         const dotMarkup = product.images.map((_, index) => `
             <span class="dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>
         `).join('');
 
+        const badgeHtml = out ? '' : '<span class="product-badge">New</span>';
+
+        const overlayCta = out
+            ? ''
+            : `<button type="button" class="btn-view" data-product-name="${product.name}">Order Now</button>`;
+
+        const orderBtnHtml = out
+            ? `<span class="product-status-pill" role="status">Out of Stock</span>`
+            : `<button type="button" class="btn-order" data-product-name="${product.name}">Order</button>`;
+
+        const footerHtml = `<div class="product-footer">
+                    <span class="product-price">${product.price}</span>
+                    ${orderBtnHtml}
+                </div>`;
+
         return `
             <article class="product-card" data-product-id="${product.id}">
                 <div class="product-image-gallery">
-                    <span class="product-badge">New</span>
+                    ${badgeHtml}
                     <button class="wishlist-btn ${wishlist.has(product.id) ? 'active' : ''}" data-product-id="${product.id}" aria-label="Add to wishlist" aria-pressed="${wishlist.has(product.id) ? 'true' : 'false'}">❤</button>
 
-                    <div class="gallery-container" data-product-id="${product.id}">
+                    <div class="gallery-container gallery-loading" data-product-id="${product.id}">
                         <div class="gallery-wrapper">
+                            <div class="gallery-skeleton" aria-hidden="true"></div>
                             ${imageMarkup}
                         </div>
-                        <button class="gallery-nav gallery-prev" aria-label="Previous image" data-direction="-1">&#8249;</button>
-                        <button class="gallery-nav gallery-next" aria-label="Next image" data-direction="1">&#8250;</button>
+                        <button type="button" class="gallery-nav gallery-prev" aria-label="Previous image" data-direction="-1">&#8249;</button>
+                        <button type="button" class="gallery-nav gallery-next" aria-label="Next image" data-direction="1">&#8250;</button>
                         <div class="gallery-dots">
                             ${dotMarkup}
                         </div>
                     </div>
 
-                    <div class="product-overlay">
-                        <button class="btn-view" data-product-name="${product.name}">Order Now</button>
-                    </div>
+                    ${overlayCta ? `<div class="product-overlay">${overlayCta}</div>` : ''}
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-description"><strong>Material:</strong> ${product.material}</p>
-                    <div class="product-footer">
-                        <span class="product-price">${product.price}</span>
-                        <button class="btn-order" data-product-name="${product.name}">Order</button>
-                    </div>
+                    ${footerHtml}
                 </div>
             </article>
         `;
@@ -212,6 +299,7 @@ function renderProducts() {
     products.forEach(product => {
         galleryState[product.id] = 0;
     });
+    bindGallerySkeletons();
 }
 
 function renderWishlistSection() {
@@ -228,20 +316,28 @@ function renderWishlistSection() {
     }
 
     wishlistEmpty.style.display = 'none';
-    wishlistGrid.innerHTML = wishlistItems.map(product => `
+    wishlistGrid.innerHTML = wishlistItems.map(product => {
+        const out = Boolean(product.outOfStock);
+        const orderOrStatus = out
+            ? `<span class="product-status-pill" role="status">Out of Stock</span>`
+            : `<button type="button" class="btn-order wishlist-order" data-product-name="${product.name}">Order</button>`;
+        return `
         <article class="wishlist-card">
-            <img src="${product.images[0]}" alt="${product.name}" class="wishlist-image">
+            <img src="${product.images[0]}" alt="${product.name}" class="wishlist-image" decoding="async" loading="lazy">
             <div class="wishlist-info">
                 <h3>${product.name}</h3>
                 <p><strong>Material:</strong> ${product.material}</p>
-                <p><strong>Price:</strong> ${product.price}</p>
+                <div class="wishlist-footer">
+                    <span class="product-price">${product.price}</span>
+                    ${orderOrStatus}
+                </div>
                 <div class="wishlist-actions">
-                    <button class="btn-order wishlist-order" data-product-name="${product.name}">Order</button>
-                    <button class="wishlist-remove" data-product-id="${product.id}">Remove</button>
+                    <button type="button" class="wishlist-remove" data-product-id="${product.id}">Remove</button>
                 </div>
             </div>
         </article>
-    `).join('');
+    `;
+    }).join('');
 }
 
 function setupProductEvents() {
@@ -253,6 +349,9 @@ function setupProductEvents() {
         if (orderButton) {
             event.preventDefault();
             event.stopPropagation();
+            if (orderButton.disabled || orderButton.classList.contains('btn-view--disabled') || orderButton.classList.contains('btn-order--disabled')) {
+                return;
+            }
             const productName = orderButton.getAttribute('data-product-name');
             if (productName) {
                 orderProduct(productName);
@@ -349,6 +448,9 @@ function setupWishlistEvents() {
     wishlistGrid.addEventListener('click', event => {
         const orderButton = event.target.closest('.wishlist-order');
         if (orderButton) {
+            if (orderButton.disabled || orderButton.classList.contains('btn-order--disabled')) {
+                return;
+            }
             const productName = orderButton.getAttribute('data-product-name');
             if (productName) {
                 orderProduct(productName);
