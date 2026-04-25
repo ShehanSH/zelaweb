@@ -1,3 +1,5 @@
+import { initFirebase, fetchProducts } from "./firebase-public.js";
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -12,8 +14,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Product and gallery data (display order: newest first — item7 → item1)
-const products = [
+// Local fallback products (used only if Firebase isn't configured yet)
+let products = [
     {
         id: 'item7',
         name: 'Latest Arrival — Style 7',
@@ -116,6 +118,32 @@ const products = [
 const galleryState = {};
 const wishlistStorageKey = 'zelaWishlistItems';
 let wishlist = new Set(JSON.parse(localStorage.getItem(wishlistStorageKey) || '[]'));
+
+async function loadProductsFromFirebaseIfConfigured() {
+    const fb = initFirebase();
+    if (!fb) {
+        return;
+    }
+    try {
+        const remote = await fetchProducts(fb.db);
+        if (Array.isArray(remote) && remote.length) {
+            // Map Firestore schema to app schema
+            products = remote.map(p => ({
+                id: p.id,
+                name: p.name || 'Untitled',
+                description: p.description || '',
+                price: p.price || '',
+                material: p.material || '',
+                outOfStock: Boolean(p.outOfStock),
+                images: Array.isArray(p.images) ? p.images : [],
+                displayOrder: Number(p.displayOrder || 0)
+            }));
+        }
+    } catch (e) {
+        // Keep local fallback if Firestore fails
+        console.warn('Firebase products load failed, using local products.', e);
+    }
+}
 
 function orderProduct(productName) {
     const phoneNumber = '94786628990';
@@ -231,7 +259,8 @@ function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
 
-    const markup = products.map((product, productIndex) => {
+    const sorted = [...products].sort((a, b) => (b.displayOrder || 0) - (a.displayOrder || 0));
+    const markup = sorted.map((product, productIndex) => {
         const out = Boolean(product.outOfStock);
         const imageMarkup = product.images
             .map((imagePath, index) => {
@@ -288,6 +317,7 @@ function renderProducts() {
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
+                    ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
                     <p class="product-description"><strong>Material:</strong> ${product.material}</p>
                     ${footerHtml}
                 </div>
@@ -536,3 +566,9 @@ setupProductEvents();
 setupWishlistEvents();
 renderWishlistSection();
 updateWishlistCount();
+
+// Load remote products if Firebase is configured, then re-render
+loadProductsFromFirebaseIfConfigured().then(() => {
+    renderProducts();
+    renderWishlistSection();
+});

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zela Admin</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .admin-wrap { padding: 2.5rem 0; }
+    .admin-grid { display: grid; grid-template-columns: 360px 1fr; gap: 1.25rem; }
+    .card { background: var(--white); border-radius: 14px; box-shadow: var(--shadow); padding: 1rem; }
+    .admin-title { font-size: 2rem; margin-bottom: 0.25rem; }
+    .muted { color: var(--text-light); font-size: 0.95rem; }
+    .field { display: flex; flex-direction: column; gap: 0.35rem; margin: 0.75rem 0; }
+    .field input, .field textarea, .field select {
+      padding: 0.75rem 0.9rem; border-radius: 10px; border: 1px solid #e7e2dc;
+      font-family: inherit; font-size: 1rem;
+    }
+    .field textarea { min-height: 90px; resize: vertical; }
+    .row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+    .btn { border: none; border-radius: 999px; padding: 0.75rem 1.1rem; font-weight: 700; cursor: pointer; }
+    .btn.primary { background: var(--primary-color); color: var(--white); }
+    .btn.ghost { background: var(--accent-color); color: var(--text-dark); }
+    .btn.danger { background: #b54242; color: var(--white); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .list { display: grid; gap: 0.75rem; }
+    .item { border: 1px solid #eee; border-radius: 12px; padding: 0.75rem; display: flex; gap: 0.75rem; align-items: center; }
+    .thumb { width: 64px; height: 64px; border-radius: 10px; background: var(--light-beige); object-fit: cover; }
+    .item h4 { margin: 0; font-size: 1.05rem; }
+    .pill { display: inline-flex; padding: 0.3rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+    .pill.out { background: #efefef; color: #444; }
+    .pill.in { background: #e7f7ee; color: #1f6a3d; }
+    .admin-topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .notice { padding: 0.7rem 0.9rem; border-radius: 12px; background: #fff7df; border: 1px solid #f0e4b3; }
+    @media (max-width: 960px) { .admin-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container admin-wrap">
+    <div class="admin-topbar">
+      <div>
+        <h1 class="admin-title">Zela Admin Dashboard</h1>
+        <p class="muted">Add / edit products, upload images, update stock. Changes appear on the public website.</p>
+      </div>
+      <div class="row">
+        <a class="btn ghost" href="index.html">View website</a>
+        <button class="btn danger" id="btnLogout" type="button" style="display:none;">Logout</button>
+      </div>
+    </div>
+
+    <div class="notice">
+      Login is only for admin. Customers do not need accounts (they order via WhatsApp).
+    </div>
+
+    <div class="admin-grid" style="margin-top: 1rem;">
+      <div class="card" id="loginCard">
+        <h2 style="margin-top:0;">Admin Login</h2>
+        <div class="field">
+          <label for="adminEmail"><strong>Email</strong></label>
+          <input id="adminEmail" type="email" placeholder="admin@zela.lk" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="adminPassword"><strong>Password</strong></label>
+          <input id="adminPassword" type="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn primary" id="btnLogin" type="button">Login</button>
+        <p class="muted" id="loginMsg" style="margin-top:0.6rem;"></p>
+      </div>
+
+      <div class="card" id="editorCard" style="display:none;">
+        <h2 style="margin-top:0;">Product Editor</h2>
+        <p class="muted">Select a product on the right, or create a new one.</p>
+
+        <div class="row" style="margin: 0.75rem 0;">
+          <button class="btn primary" id="btnNew" type="button">+ New Product</button>
+          <button class="btn ghost" id="btnSave" type="button" disabled>Save</button>
+          <button class="btn danger" id="btnDelete" type="button" disabled>Delete</button>
+        </div>
+
+        <div class="field">
+          <label><strong>Display Order</strong> (higher = newer)</label>
+          <input id="pOrder" type="number" placeholder="700" />
+        </div>
+
+        <div class="field">
+          <label><strong>Title</strong></label>
+          <input id="pName" type="text" placeholder="Rose Print Kaftan Frock" />
+        </div>
+
+        <div class="field">
+          <label><strong>Description</strong></label>
+          <textarea id="pDescription" placeholder="Short description shown to customers"></textarea>
+        </div>
+
+        <div class="field">
+          <label><strong>Material</strong></label>
+          <input id="pMaterial" type="text" placeholder="Glass Printed Material" />
+        </div>
+
+        <div class="field">
+          <label><strong>Price</strong></label>
+          <input id="pPrice" type="text" placeholder="Rs.1500/=" />
+        </div>
+
+        <div class="field">
+          <label><strong>Stock Status</strong></label>
+          <select id="pStock">
+            <option value="in">In stock</option>
+            <option value="out">Out of stock</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label><strong>Images</strong> (upload multiple)</label>
+          <input id="pImages" type="file" accept="image/*" multiple />
+          <p class="muted">Uploads go to Firebase Storage and URLs are saved in Firestore.</p>
+        </div>
+
+        <div id="imagePreview" class="row"></div>
+        <p class="muted" id="saveMsg"></p>
+      </div>
+
+      <div class="card" id="listCard" style="display:none;">
+        <h2 style="margin-top:0;">Products</h2>
+        <div class="list" id="productList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script type="module" src="firebase-public.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
+

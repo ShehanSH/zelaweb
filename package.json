@@ -1,0 +1,9 @@
+{
+  "name": "zelaweb",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "@vercel/blob": "latest"
+  }
+}
+
